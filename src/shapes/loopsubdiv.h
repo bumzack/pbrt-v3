@@ -44,10 +44,10 @@
 namespace pbrt {
 
 // LoopSubdiv Declarations
-std::vector<std::shared_ptr<Shape>> CreateLoopSubdiv(const Transform *o2w,
-                                                     const Transform *w2o,
-                                                     bool reverseOrientation,
-                                                     const ParamSet &params);
+    std::vector<std::shared_ptr<Shape>> CreateLoopSubdiv(const Transform *o2w,
+                                                         const Transform *w2o,
+                                                         bool reverseOrientation,
+                                                         const ParamSet &params);
 
 }  // namespace pbrt
 
