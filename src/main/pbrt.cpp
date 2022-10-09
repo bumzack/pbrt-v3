@@ -164,7 +164,7 @@ void test_lerp_f64() {
     for (int i = 0; i < 8; i++) {
         Float res = Lerp(arr[i], min, max);
         cout << std::fixed << std::setw(11) << std::setprecision(6) << "min " << min << "   max:  " << max
-             << "  res     " << res << endl;
+             << " value    " << arr[i] << "  res     " << res << endl;
     }
     cout << endl << "================================================================================" << endl;
 }
@@ -182,7 +182,7 @@ void test_lerp_vec() {
     for (int i = 0; i < 8; i++) {
         Point3f res = Lerp(arr[i], a, b);
         cout << std::fixed << std::setw(11) << std::setprecision(6) << "a " << a << "   b:  " << b
-             << "  res     " << res << endl;
+             << " value    " << arr[i] << "  res     " << res << endl;
     }
     cout << endl << "================================================================================" << endl;
 
@@ -225,6 +225,14 @@ void test_blossom_bezier() {
 
 }
 
+//
+//template<class T>
+//std::ostream &
+//operator<<(std::ostream &s, const Vector3<T> &v) {
+//    s << std::fixed << std::setw(11) << std::setprecision(4) <<v. x << ", " << v.y << " " << v.z;
+//    return s;
+//}
+
 
 void test_coordinate_system() {
     cout << endl << "================================================================================" << endl;
@@ -248,9 +256,11 @@ void test_coordinate_system() {
     for (int i = 0; i < 4; i++) {
         CoordinateSystem(v1[i], &v2[i], &v3[i]);
 
-        cout << "v1 " << v1[i].x << "     " << v1[i].x << "    " << v1[i].z << endl;
-        cout << "v2 " << v2[i].x << "     " << v2[i].x << "    " << v2[i].z << endl;
-        cout << "v3 " << v3[i].x << "     " << v3[i].x << "    " << v3[i].z << endl;
+        cout << "v1 " << v1[i].x << "     " << v1[i].y << "    " << v1[i].z << endl;
+        cout << "v2 " << v2[i].x << "     " << v2[i].y << "    " << v2[i].z << endl;
+        cout << "v3 " << v3[i].x << "     " << v3[i].y << "    " << v3[i].z << endl;
+
+        cout << "v1 " << v1[i] << "    v2   " << v2[i] << "  v3    " << v3[i] << endl;
 
         cout << endl;
     }
@@ -265,10 +275,12 @@ void test_look_at() {
     cout << endl << "================================================================================" << endl;
     cout << "   LookAt   " << endl << endl;
 
-
     Point3f pos = Point3f(1.0, 2.0, 3.0);
     Point3f look = Point3f(5.0, 6.0, 7.0);
-    Vector3f up[3] = {Vector3f(1.0, 0.0, 0.0), Vector3f(0.0, 1.0, 0.0), Vector3f(0.0, 0.0, 1.0)};
+    Vector3f up[3] = {Vector3f(1.0, 0.0, 0.0),
+                      Vector3f(0.0, 1.0, 0.0),
+                      Vector3f(0.0, 0.0, 1.0)
+    };
 
     cout << "pos:   " << pos.x << "   " << pos.y << "    " << pos.z << endl;
     cout << "look:   " << look.x << "   " << look.y << "    " << look.z << endl;
@@ -346,24 +358,24 @@ void test_expand() {
 }
 
 
-void test_ray_bounds() {
-    cout << endl << "================================================================================" << endl;
-    cout << "   rayBounds   " << endl << endl;
-
-    Ray r = Ray(Point3f(1.0, 2.0, 3.0), Vector3f(-2.0, -2.0, -1.5));
-    Float tMax = 1.0;
-    Bounds3f rayBounds(Point3f(0, 0, 0), Point3f(0, 0, r.d.Length() * tMax));
-
-
-    cout << "ray.p:   " << r.o.x << "   " << r.o.y << "    " << r.o.z << endl;
-    cout << "ray.d:   " << r.d.x << "   " << r.d.y << "    " << r.d.z << "    length(r.d)  " << r.d.Length() << endl;
-
-
-    cout << "rayBounds.min:   " << rayBounds.pMin.x << "   " << rayBounds.pMin.y << "    " << rayBounds.pMin.z << endl;
-    cout << "rayBounds.max:   " << rayBounds.pMax.x << "   " << rayBounds.pMax.y << "    " << rayBounds.pMax.z << endl;
-
-    cout << endl << "================================================================================" << endl;
-}
+//void test_ray_bounds() {
+//    cout << endl << "================================================================================" << endl;
+//    cout << "   rayBounds   " << endl << endl;
+//
+//    Ray r = Ray(Point3f(1.0, 2.0, 3.0), Vector3f(-2.0, -2.0, -1.5));
+//    Float tMax = 1.0;
+//    Bounds3f rayBounds(Point3f(0, 0, 0), Point3f(0, 0, r.d.Length() * tMax));
+//
+//
+//    cout << "ray.p:   " << r.o.x << "   " << r.o.y << "    " << r.o.z << endl;
+//    cout << "ray.d:   " << r.d.x << "   " << r.d.y << "    " << r.d.z << "    length(r.d)  " << r.d.Length() << endl;
+//
+//
+//    cout << "rayBounds.min:   " << rayBounds.pMin.x << "   " << rayBounds.pMin.y << "    " << rayBounds.pMin.z << endl;
+//    cout << "rayBounds.max:   " << rayBounds.pMax.x << "   " << rayBounds.pMax.y << "    " << rayBounds.pMax.z << endl;
+//
+//    cout << endl << "================================================================================" << endl;
+//}
 
 
 void test_overlaps() {
@@ -402,7 +414,7 @@ void test_overlaps() {
 }
 
 
-void test_intersect_curve() {
+void test_intersect_curve(const std::string curve_type) {
     cout << endl << "================================================================================" << endl;
     cout << "intersect curve" << endl << endl;
 
@@ -448,7 +460,7 @@ void test_intersect_curve() {
     paramSet.AddPoint3f("P", std::move(pts), 1);
 
     std::unique_ptr<std::string[]> basis(new std::string[1]);
-    basis[0] = "bezier";
+    basis[0] = curve_type;
     paramSet.AddString("basis", std::move(basis), 1);
 
     std::unique_ptr<std::string[]> t(new std::string[1]);
@@ -486,9 +498,32 @@ void test_intersect_curve() {
     bool testAlphaTexture = false;
 
     for (int i = 0; i < cnt; i++) {
+        const Float obj2world[4][4] = {{1.0, 2.0, 3.0, 1.0},
+                                       {2.0, 7.0, 5.0, 4.0},
+                                       {3.0, 6.0, 2.0, 1.0},
+                                       {4.0, 5.0, 1.0, 1.0}
+        };
+
+        const Float w2o[4][4] = {{1.0, 3.0, 9.0, 4.0},
+                                 {1.0, 4.0, 8.0, 3.0},
+                                 {1.0, 1.0, 7.0, 4.0},
+                                 {1.0, 5.0, 6.0, 5.0}
+        };
+
+        const pbrt::Transform objectToWorld = pbrt::Transform(obj2world);
+        const pbrt::Transform worldToObject = pbrt::Transform(w2o);
+
+
+        std::vector<std::shared_ptr<Shape>> shape = CreateCurveShape(&objectToWorld,
+                                                                     &worldToObject,
+                                                                     reverseOrientation,
+                                                                     paramSet);
+
+
         c.Intersect(rays[i], &tHit, &si, testAlphaTexture);
 
-        cout << "intersect_curve  ray  point " << rays[i].o << "   direction " << rays[i].d << "   i = " << i << endl;
+        cout << "intersect_curve " << curve_type << "  ray  point " << rays[i].o << "   direction " << rays[i].d
+             << "   i = " << i << endl;
 
         cout << "thit   " << tHit << endl;
         cout << "si uv  " << si.uv << endl;
@@ -605,20 +640,72 @@ void test_loopsubdiv() {
 }
 
 
+void test_log2() {
+    cout << endl << "================================================================================" << endl;
+    cout << "loop sub div" << endl << endl;
+
+    srand(time(nullptr));
+
+    auto Log2 = [](float v) -> int {
+        if (v < 1) return 0;
+        uint32_t bits = FloatToBits(v);
+        // https://graphics.stanford.edu/~seander/bithacks.html#IntegerLog
+        // (With an additional add so get round-to-nearest rather than
+        // round down.)
+        cout << "v = " << v << "  (bits >> 23)   " << (bits >> 23) << "    (1 << 22)   " << (1 << 22) << endl;
+        cout << "v = " << v << "  (bits & (1 << 22) ? 1 : 0)   " << (bits & (1 << 22) ? 1 : 0) << endl;
+        cout << "v = " << v << "  bits & (1 << 22)   " << (bits & (1 << 22)) << endl;
+
+        if ((bits & (1 << 22))) {
+            cout << " (bits & (1 << 22)) = " << (bits & (1 << 22)) << "   == true" << endl;
+        } else {
+            cout << " (bits & (1 << 22))  =  " << (bits & (1 << 22)) << " == false" << endl;
+
+        }
+        return (bits >> 23) - 127 + (bits & (1 << 22) ? 1 : 0);
+    };
+
+    // Compute log base 4 by dividing log2 in half.
+//
+//    for (int i = 0; i < 10; i++) {
+//        Float x = rand() % 100 + 1;
+//
+//        int l2 = Log2(x);
+//        cout << std::fixed << std::setw(11) << std::setprecision(6) << "x  " << log2(x) << "   log2(x):  " << l2
+//             << endl;
+//    }
+
+Float   x = 7.0;
+    int l2 = Log2(x);
+    cout << std::fixed << std::setw(11) << std::setprecision(6) << " x " << x << "   log2(x):  " << l2 << endl;
+
+
+    Float   x1 = 46.0;
+    int l2a = Log2(x1);
+    cout << std::fixed << std::setw(11) << std::setprecision(6) << " x " << x1 << "   log2(x):  " << l2a << endl;
+
+    cout << endl << "================================================================================" << endl;
+}
+
+
 // main program
 int main(int argc, char *argv[]) {
-//    test_lerp_f64();
-//    test_lerp_vec();
-//    test_blossom_bezier();
-//    test_coordinate_system();
-//    test_look_at();
-//    test_union();
-//    //  test_bezier_shape();
-//    test_expand();
-//    test_ray_bounds();
-//    test_overlaps();
-//    test_clamp();
-    test_intersect_curve();
-    // test_loopsubdiv();
+    test_lerp_f64();
+    test_lerp_vec();
+    test_blossom_bezier();
+    test_coordinate_system();
+    test_look_at();
+
+    test_union();
+    test_expand();
+    // test_ray_bounds();
+    test_overlaps();
+    test_clamp();
+    test_log2();
+//
+//    test_intersect_curve("bezier");
+//    test_intersect_curve("bspline");
+//    test_loopsubdiv();
+
     return 0;
 }
